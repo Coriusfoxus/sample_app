@@ -22,6 +22,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
 
   test "successful edit with friendly warning" do
     get edit_user_path(@user)
+    assert_not_nil session[:forwarding_url]
     log_in_as(@user)
     assert_redirected_to edit_user_path(@user)
     name = "Foo Bar"
@@ -36,5 +37,6 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     @user.reload
     assert_equal name, @user.name
     assert_equal email, @user.email
+    assert_nil session[:forwarding_url]
   end
 end

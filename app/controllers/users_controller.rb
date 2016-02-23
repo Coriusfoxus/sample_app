@@ -27,9 +27,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
     if @user.update_attributes(user_params)
-      # Handle a successful update
       flash[:success] = "Profile updated"
       redirect_to @user
     else
@@ -66,8 +64,10 @@ class UsersController < ApplicationController
 
   def correct_user
     @user = User.find(params[:id])
-    flash[:danger] = "You do not have access to that users data"
-    redirect_to(root_url) unless current_user?(@user)
+    unless current_user?(@user)
+      flash[:danger] = "You do not have access to that users data"
+      redirect_to(root_url) unless current_user?(@user)
+    end
   end
   
   def admin_user
